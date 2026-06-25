@@ -1,63 +1,60 @@
-Implement Phase 2: Database Models.
+Implement Phase 3 and Phase 4 only.
 
-Follow the existing project architecture exactly. Do not change folders, files, naming conventions, or introduce new layers.
+Follow the existing project architecture exactly. Do not change folders, file names, or introduce new layers.
 
-Create SQLAlchemy 2.0 models only inside:
+Phase 3 — Schemas
 
-app/db/models/
+Create Pydantic schemas inside:
+
+app/schemas/
 
 * asset.py
 * tag.py
-* asset_tag.py
 * relationship.py
+* common.py
 
 Requirements:
 
-Asset:
+* AssetCreate
+* AssetUpdate
+* AssetResponse
+* TagCreate
+* TagResponse
+* RelationshipCreate
+* RelationshipResponse
+* Pagination schemas
+* Standard API response schemas
+* Validation rules where appropriate
 
-* id (UUID)
-* type
-* value
-* status
-* first_seen
-* last_seen
-* source
-* metadata (JSONB)
-* Unique(type, value)
+Phase 4 — Repositories
 
-Tag:
+Create repositories inside:
 
-* id (UUID)
-* name (unique)
+app/db/repositories/
 
-AssetTag:
+* asset_repository.py
+* tag_repository.py
+* relationship_repository.py
 
-* asset_id
-* tag_id
+Requirements:
 
-Relationship:
-
-* id (UUID)
-* source_asset_id
-* target_asset_id
-* relationship_type
-
-Relationships:
-
-* Asset ↔ Tags (Many-to-Many)
-* Asset ↔ Relationship (Self-referencing graph)
+* Database access only
+* CRUD queries
+* Filtering
+* Search
+* Pagination support
+* Relationship queries
+* No business logic
 
 Rules:
 
 * Use SQLAlchemy 2.0 style.
-* Use PostgreSQL types where appropriate.
-* Add proper constraints, indexes, and relationships.
-* Register models with Base.
-* Do not modify architecture.
-* Do not create schemas.
-* Do not create repositories.
+* Keep repositories focused on data access only.
+* Do not modify existing models.
 * Do not create services.
 * Do not create API routes.
+* Do not create tests.
 * Do not generate documentation or explanations.
+* Do not print architecture summaries.
 
-Only implement the model files.
+Only implement schemas and repositories while respecting the current architecture.
