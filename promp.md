@@ -1,30 +1,50 @@
-Enhance the existing services to complete Phase 6.
+Implement Phase 7 — API Endpoints.
 
-Implement business logic inside the current services only.
+Follow the existing architecture exactly.
 
-AssetService:
+Create endpoints inside:
+
+app/api/
+
+* assets.py
+* imports.py
+* relationships.py
+* health.py
+
+Requirements:
+
+Assets:
+
+* POST /assets
+* GET /assets
+* GET /assets/{id}
+* PUT /assets/{id}
+* DELETE /assets/{id}
+
+Support:
 
 * Search
 * Filtering
 * Pagination
-* Lifecycle management
 
-ImportService:
+Imports:
 
-* Deduplication using (type, value)
-* Metadata merge
-* Bulk import processing
-* Update existing assets when duplicates are found
+* POST /assets/import
 
-RelationshipService:
+Relationships:
 
-* Asset graph retrieval
-* Relationship validation
+* POST /relationships
+* GET /assets/{id}/relationships
+* GET /assets/{id}/graph
+
+Health:
+
+* GET /health
 
 Rules:
 
-* Do not create new services.
-* Do not modify architecture.
-* Keep database access inside repositories only.
-* Keep business logic inside services.
-* Reuse existing repositories and schemas.
+* API layer must contain routing only.
+* No business logic in endpoints.
+* Use services via dependency injection.
+* Use schemas for request/response validation.
+* Keep architecture unchanged.
