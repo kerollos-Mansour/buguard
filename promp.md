@@ -1,17 +1,36 @@
-Please make the following small improvements to the project structure:
+Implement Phase 1: Database Setup only.
 
-* Add `core/dependencies.py` for shared FastAPI dependencies (database session and authentication dependencies).
-* Add `schemas/common.py` for shared response schemas (pagination and standard API responses).
-* Expand the `tests` directory with:
+Tasks:
 
-  * `conftest.py`
-  * `test_assets.py`
-  * `test_import.py`
-  * `test_dedup.py`
-  * `test_relationships.py`
-* Add `__init__.py` files to all Python package directories.
+* Configure SQLAlchemy in `app/db/database.py`
 
-Do not change the architecture.
-Do not add new layers or modules.
-Keep the structure simple and aligned with FastAPI best practices.
-Only update the project structure and file skeletons.
+  * Engine
+  * SessionLocal
+  * Base
+  * get_db()
+
+* Configure PostgreSQL using environment variables from `.env`
+
+* Setup Alembic
+
+  * `alembic.ini`
+  * `alembic/env.py`
+  * connect Base.metadata
+  * enable autogenerate migrations
+
+* Update:
+
+  * `.env.example`
+  * `requirements.txt`
+  * `docker-compose.yml` (PostgreSQL service only if needed)
+
+Rules:
+
+* Keep current architecture unchanged.
+* Do not create models.
+* Do not create repositories.
+* Do not create services.
+* Do not create API routes.
+* Use SQLAlchemy 2.0 style.
+
+Generate only Phase 1 files and configuration.
