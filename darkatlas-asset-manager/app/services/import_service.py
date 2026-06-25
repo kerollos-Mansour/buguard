@@ -23,6 +23,9 @@ class ImportService:
                 if asset_data.source:
                     update_data.source = asset_data.source
                     
+                if existing_asset.status != "ACTIVE":
+                    update_data.status = "ACTIVE"
+                    
                 updated_asset = await self.asset_repository.update(existing_asset, update_data)
                 result_assets.append(updated_asset)
             else:

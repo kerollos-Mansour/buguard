@@ -1,57 +1,30 @@
-Implement Phase 5 — Services.
+Enhance the existing services to complete Phase 6.
 
-Follow the existing project architecture exactly. Do not change folders, file names, or introduce new layers.
-
-Create services inside:
-
-app/services/
-
-* asset_service.py
-* import_service.py
-* relationship_service.py
-
-Requirements:
+Implement business logic inside the current services only.
 
 AssetService:
 
-* Asset CRUD business logic
-* Filtering
 * Search
+* Filtering
 * Pagination
-* Asset lifecycle management
-* Asset validation
+* Lifecycle management
 
 ImportService:
 
-* Bulk asset import
 * Deduplication using (type, value)
-* Metadata merging
-* Update last_seen for existing assets
-* Create new assets when not found
+* Metadata merge
+* Bulk import processing
+* Update existing assets when duplicates are found
 
 RelationshipService:
 
-* Create relationships
-* Fetch asset relationships
-* Fetch asset graph
+* Asset graph retrieval
 * Relationship validation
 
 Rules:
 
-* Services may use repositories only.
-* Do not access the database directly.
-* Keep all business logic inside services.
-* Keep repositories responsible for data access only.
-* Reuse existing schemas and models.
-* Use dependency injection where appropriate.
-
-Do not:
-
-* Create API routes.
-* Create tests.
-* Modify models.
-* Modify schemas.
-* Modify architecture.
-* Generate explanations or documentation.
-
-Only implement the service layer.
+* Do not create new services.
+* Do not modify architecture.
+* Keep database access inside repositories only.
+* Keep business logic inside services.
+* Reuse existing repositories and schemas.

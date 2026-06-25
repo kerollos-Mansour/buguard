@@ -50,6 +50,14 @@ class AssetService:
                     
         return await self.asset_repository.update(asset, asset_in)
 
+    async def update_status(self, asset_id: UUID, new_status: str) -> Asset:
+        asset = await self.get_asset(asset_id)
+        if asset.status == new_status:
+            return asset
+            
+        update_data = AssetUpdate(status=new_status)
+        return await self.asset_repository.update(asset, update_data)
+
     async def delete_asset(self, asset_id: UUID) -> None:
         asset = await self.get_asset(asset_id)
         await self.asset_repository.delete(asset)
