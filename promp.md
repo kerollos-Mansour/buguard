@@ -1,60 +1,57 @@
-Implement Phase 3 and Phase 4 only.
+Implement Phase 5 — Services.
 
 Follow the existing project architecture exactly. Do not change folders, file names, or introduce new layers.
 
-Phase 3 — Schemas
+Create services inside:
 
-Create Pydantic schemas inside:
+app/services/
 
-app/schemas/
-
-* asset.py
-* tag.py
-* relationship.py
-* common.py
+* asset_service.py
+* import_service.py
+* relationship_service.py
 
 Requirements:
 
-* AssetCreate
-* AssetUpdate
-* AssetResponse
-* TagCreate
-* TagResponse
-* RelationshipCreate
-* RelationshipResponse
-* Pagination schemas
-* Standard API response schemas
-* Validation rules where appropriate
+AssetService:
 
-Phase 4 — Repositories
-
-Create repositories inside:
-
-app/db/repositories/
-
-* asset_repository.py
-* tag_repository.py
-* relationship_repository.py
-
-Requirements:
-
-* Database access only
-* CRUD queries
+* Asset CRUD business logic
 * Filtering
 * Search
-* Pagination support
-* Relationship queries
-* No business logic
+* Pagination
+* Asset lifecycle management
+* Asset validation
+
+ImportService:
+
+* Bulk asset import
+* Deduplication using (type, value)
+* Metadata merging
+* Update last_seen for existing assets
+* Create new assets when not found
+
+RelationshipService:
+
+* Create relationships
+* Fetch asset relationships
+* Fetch asset graph
+* Relationship validation
 
 Rules:
 
-* Use SQLAlchemy 2.0 style.
-* Keep repositories focused on data access only.
-* Do not modify existing models.
-* Do not create services.
-* Do not create API routes.
-* Do not create tests.
-* Do not generate documentation or explanations.
-* Do not print architecture summaries.
+* Services may use repositories only.
+* Do not access the database directly.
+* Keep all business logic inside services.
+* Keep repositories responsible for data access only.
+* Reuse existing schemas and models.
+* Use dependency injection where appropriate.
 
-Only implement schemas and repositories while respecting the current architecture.
+Do not:
+
+* Create API routes.
+* Create tests.
+* Modify models.
+* Modify schemas.
+* Modify architecture.
+* Generate explanations or documentation.
+
+Only implement the service layer.
