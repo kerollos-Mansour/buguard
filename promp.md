@@ -1,36 +1,63 @@
-Implement Phase 1: Database Setup only.
+Implement Phase 2: Database Models.
 
-Tasks:
+Follow the existing project architecture exactly. Do not change folders, files, naming conventions, or introduce new layers.
 
-* Configure SQLAlchemy in `app/db/database.py`
+Create SQLAlchemy 2.0 models only inside:
 
-  * Engine
-  * SessionLocal
-  * Base
-  * get_db()
+app/db/models/
 
-* Configure PostgreSQL using environment variables from `.env`
+* asset.py
+* tag.py
+* asset_tag.py
+* relationship.py
 
-* Setup Alembic
+Requirements:
 
-  * `alembic.ini`
-  * `alembic/env.py`
-  * connect Base.metadata
-  * enable autogenerate migrations
+Asset:
 
-* Update:
+* id (UUID)
+* type
+* value
+* status
+* first_seen
+* last_seen
+* source
+* metadata (JSONB)
+* Unique(type, value)
 
-  * `.env.example`
-  * `requirements.txt`
-  * `docker-compose.yml` (PostgreSQL service only if needed)
+Tag:
+
+* id (UUID)
+* name (unique)
+
+AssetTag:
+
+* asset_id
+* tag_id
+
+Relationship:
+
+* id (UUID)
+* source_asset_id
+* target_asset_id
+* relationship_type
+
+Relationships:
+
+* Asset ↔ Tags (Many-to-Many)
+* Asset ↔ Relationship (Self-referencing graph)
 
 Rules:
 
-* Keep current architecture unchanged.
-* Do not create models.
+* Use SQLAlchemy 2.0 style.
+* Use PostgreSQL types where appropriate.
+* Add proper constraints, indexes, and relationships.
+* Register models with Base.
+* Do not modify architecture.
+* Do not create schemas.
 * Do not create repositories.
 * Do not create services.
 * Do not create API routes.
-* Use SQLAlchemy 2.0 style.
+* Do not generate documentation or explanations.
 
-Generate only Phase 1 files and configuration.
+Only implement the model files.
