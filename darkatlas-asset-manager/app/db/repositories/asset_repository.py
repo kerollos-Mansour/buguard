@@ -1,6 +1,6 @@
 from typing import Optional, List, Tuple, Any, Dict
 from uuid import UUID
-from sqlalchemy import select, func, or_, and_
+from sqlalchemy import select, func, or_, and_, asc, desc
 from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
 
@@ -35,29 +35,50 @@ class AssetRepository:
         result = self.session.execute(stmt)
         return result.scalar_one_or_none()
 
-    def get_all(self, page: int = 1, size: int = 50, filters: Optional[Dict[str, Any]] = None, search: Optional[str] = None) -> Tuple[List[Asset], int]:
+    def get_all(
+        self,
+        page: int = 1,
+        size: int = 50,
+        filters: Optional[Dict[str, Any]] = None,
+        search: Optional[str] = None,
+        tag: Optional[str] = None,
+        sort_by: str = "last_seen",
+        order: str = "desc",
+    ) -> Tuple[List[Asset], int]:
         stmt = select(Asset).options(selectinload(Asset.tags))
-        
+
         if filters:
             if "type" in filters and filters["type"]:
                 stmt = stmt.where(Asset.type == filters["type"])
             if "status" in filters and filters["status"]:
                 stmt = stmt.where(Asset.status == filters["status"])
-                
+
         if search:
             stmt = stmt.where(or_(
                 Asset.value.ilike(f"%{search}%"),
                 Asset.source.ilike(f"%{search}%")
             ))
-            
+
+        if tag:
+            stmt = stmt.join(Asset.tags).where(Tag.name == tag)
+
         count_stmt = select(func.count()).select_from(stmt.subquery())
         total_result = self.session.execute(count_stmt)
         total = total_result.scalar_one()
-        
-        stmt = stmt.order_by(Asset.last_seen.desc()).offset((page - 1) * size).limit(size)
+
+        # Safe whitelist for sortable columns
+        sort_columns = {
+            "first_seen": Asset.first_seen,
+            "last_seen": Asset.last_seen,
+            "value": Asset.value,
+        }
+        sort_col = sort_columns.get(sort_by, Asset.last_seen)
+        order_fn = asc if order == "asc" else desc
+        stmt = stmt.order_by(order_fn(sort_col)).offset((page - 1) * size).limit(size)
+
         result = self.session.execute(stmt)
         items = list(result.scalars().all())
-        
+
         return items, total
 
     def update(self, asset: Asset, asset_update: AssetUpdate) -> Asset:

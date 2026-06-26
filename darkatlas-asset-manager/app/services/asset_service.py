@@ -30,8 +30,8 @@ class AssetService:
             )
         return asset
 
-    def get_assets(self, page: int = 1, size: int = 50, filters: Optional[Dict[str, Any]] = None, search: Optional[str] = None) -> Tuple[List[Asset], int]:
-        return self.asset_repository.get_all(page=page, size=size, filters=filters, search=search)
+    def get_assets(self, page: int = 1, size: int = 50, filters: Optional[Dict[str, Any]] = None, search: Optional[str] = None, tag: Optional[str] = None, sort_by: str = "last_seen", order: str = "desc") -> Tuple[List[Asset], int]:
+        return self.asset_repository.get_all(page=page, size=size, filters=filters, search=search, tag=tag, sort_by=sort_by, order=order)
 
     def update_asset(self, asset_id: UUID, asset_in: AssetUpdate) -> Asset:
         asset = self.get_asset(asset_id)

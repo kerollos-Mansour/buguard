@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 from uuid import UUID
-from typing import Optional, List
+from typing import Optional, List, Literal
 
 from app.db.database import get_db
 from app.db.repositories.asset_repository import AssetRepository
@@ -29,6 +29,9 @@ def get_assets(
     type: Optional[str] = None,
     status_filter: Optional[str] = Query(None, alias="status"),
     search: Optional[str] = None,
+    tag: Optional[str] = None,
+    sort: Optional[Literal["first_seen", "last_seen", "value"]] = Query(None, description="Sort by field"),
+    order: Literal["asc", "desc"] = Query("desc", description="Sort order"),
     service: AssetService = Depends(get_asset_service)
 ):
     filters = {}
@@ -36,8 +39,9 @@ def get_assets(
         filters["type"] = type
     if status_filter:
         filters["status"] = status_filter
-        
-    items, total = service.get_assets(page=page, size=size, filters=filters, search=search)
+
+    sort_by = sort if sort else "last_seen"
+    items, total = service.get_assets(page=page, size=size, filters=filters, search=search, tag=tag, sort_by=sort_by, order=order)
     pages = (total + size - 1) // size if size else 0
     return PaginatedResponse(
         items=items,
