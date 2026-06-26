@@ -9,6 +9,7 @@ from app.db.repositories.tag_repository import TagRepository
 from app.services.asset_service import AssetService
 from app.schemas.asset import AssetCreate, AssetUpdate, AssetResponse
 from app.schemas.common import PaginatedResponse
+from app.core.security import verify_api_key
 
 router = APIRouter(tags=["assets"])
 
@@ -18,7 +19,7 @@ def get_asset_service(db: Session = Depends(get_db)) -> AssetService:
     return AssetService(asset_repo, tag_repo)
 
 @router.post("/assets", response_model=AssetResponse, status_code=status.HTTP_201_CREATED)
-def create_asset(asset_in: AssetCreate, service: AssetService = Depends(get_asset_service)):
+def create_asset(asset_in: AssetCreate, service: AssetService = Depends(get_asset_service), api_key: str = Depends(verify_api_key)):
     return service.create_asset(asset_in)
 
 @router.get("/assets", response_model=PaginatedResponse[AssetResponse])
@@ -51,9 +52,9 @@ def get_asset(id: UUID, service: AssetService = Depends(get_asset_service)):
     return service.get_asset(id)
 
 @router.put("/assets/{id}", response_model=AssetResponse)
-def update_asset(id: UUID, asset_in: AssetUpdate, service: AssetService = Depends(get_asset_service)):
+def update_asset(id: UUID, asset_in: AssetUpdate, service: AssetService = Depends(get_asset_service), api_key: str = Depends(verify_api_key)):
     return service.update_asset(id, asset_in)
 
 @router.delete("/assets/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_asset(id: UUID, service: AssetService = Depends(get_asset_service)):
+def delete_asset(id: UUID, service: AssetService = Depends(get_asset_service), api_key: str = Depends(verify_api_key)):
     service.delete_asset(id)

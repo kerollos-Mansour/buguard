@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: str = "5432"
     POSTGRES_DB: str = "darkatlas"
+    API_KEY: str = "default-secret-key"
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:

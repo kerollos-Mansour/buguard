@@ -8,6 +8,7 @@ from app.db.repositories.relationship_repository import RelationshipRepository
 from app.db.repositories.asset_repository import AssetRepository
 from app.services.relationship_service import RelationshipService
 from app.schemas.relationship import RelationshipCreate, RelationshipResponse
+from app.core.security import verify_api_key
 
 router = APIRouter(tags=["relationships"])
 
@@ -17,7 +18,7 @@ def get_relationship_service(db: Session = Depends(get_db)) -> RelationshipServi
     return RelationshipService(rel_repo, asset_repo)
 
 @router.post("/relationships", response_model=RelationshipResponse, status_code=status.HTTP_201_CREATED)
-def create_relationship(rel_in: RelationshipCreate, service: RelationshipService = Depends(get_relationship_service)):
+def create_relationship(rel_in: RelationshipCreate, service: RelationshipService = Depends(get_relationship_service), api_key: str = Depends(verify_api_key)):
     return service.create_relationship(rel_in)
 
 @router.get("/assets/{id}/relationships")
