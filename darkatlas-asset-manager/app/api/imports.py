@@ -14,5 +14,5 @@ def get_import_service(db: Session = Depends(get_db)) -> ImportService:
     return ImportService(asset_repo)
 
 @router.post("/assets/import", response_model=List[AssetResponse], status_code=status.HTTP_201_CREATED)
-async def import_assets(assets_in: List[AssetCreate], service: ImportService = Depends(get_import_service)):
-    return await service.import_assets(assets_in)
+def import_assets(assets_in: List[AssetCreate], service: ImportService = Depends(get_import_service)):
+    return service.import_assets(assets_in)

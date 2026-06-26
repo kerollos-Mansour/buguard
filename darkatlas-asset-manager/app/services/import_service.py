@@ -7,10 +7,10 @@ class ImportService:
     def __init__(self, asset_repository: AssetRepository):
         self.asset_repository = asset_repository
 
-    async def import_assets(self, assets_in: List[AssetCreate]) -> List[Asset]:
+    def import_assets(self, assets_in: List[AssetCreate]) -> List[Asset]:
         result_assets = []
         for asset_data in assets_in:
-            existing_asset = await self.asset_repository.get_by_type_and_value(asset_data.type, asset_data.value)
+            existing_asset = self.asset_repository.get_by_type_and_value(asset_data.type, asset_data.value)
             
             if existing_asset:
                 update_data = AssetUpdate()
@@ -26,10 +26,10 @@ class ImportService:
                 if existing_asset.status != "ACTIVE":
                     update_data.status = "ACTIVE"
                     
-                updated_asset = await self.asset_repository.update(existing_asset, update_data)
+                updated_asset = self.asset_repository.update(existing_asset, update_data)
                 result_assets.append(updated_asset)
             else:
-                new_asset = await self.asset_repository.create(asset_data)
+                new_asset = self.asset_repository.create(asset_data)
                 result_assets.append(new_asset)
                 
         return result_assets

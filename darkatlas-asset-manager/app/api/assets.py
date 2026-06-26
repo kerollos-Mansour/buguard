@@ -18,11 +18,11 @@ def get_asset_service(db: Session = Depends(get_db)) -> AssetService:
     return AssetService(asset_repo, tag_repo)
 
 @router.post("/assets", response_model=AssetResponse, status_code=status.HTTP_201_CREATED)
-async def create_asset(asset_in: AssetCreate, service: AssetService = Depends(get_asset_service)):
-    return await service.create_asset(asset_in)
+def create_asset(asset_in: AssetCreate, service: AssetService = Depends(get_asset_service)):
+    return service.create_asset(asset_in)
 
 @router.get("/assets", response_model=PaginatedResponse[AssetResponse])
-async def get_assets(
+def get_assets(
     page: int = Query(1, ge=1),
     size: int = Query(50, ge=1, le=1000),
     type: Optional[str] = None,
@@ -36,7 +36,7 @@ async def get_assets(
     if status_filter:
         filters["status"] = status_filter
         
-    items, total = await service.get_assets(page=page, size=size, filters=filters, search=search)
+    items, total = service.get_assets(page=page, size=size, filters=filters, search=search)
     pages = (total + size - 1) // size if size else 0
     return PaginatedResponse(
         items=items,
@@ -47,13 +47,13 @@ async def get_assets(
     )
 
 @router.get("/assets/{id}", response_model=AssetResponse)
-async def get_asset(id: UUID, service: AssetService = Depends(get_asset_service)):
-    return await service.get_asset(id)
+def get_asset(id: UUID, service: AssetService = Depends(get_asset_service)):
+    return service.get_asset(id)
 
 @router.put("/assets/{id}", response_model=AssetResponse)
-async def update_asset(id: UUID, asset_in: AssetUpdate, service: AssetService = Depends(get_asset_service)):
-    return await service.update_asset(id, asset_in)
+def update_asset(id: UUID, asset_in: AssetUpdate, service: AssetService = Depends(get_asset_service)):
+    return service.update_asset(id, asset_in)
 
 @router.delete("/assets/{id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_asset(id: UUID, service: AssetService = Depends(get_asset_service)):
-    await service.delete_asset(id)
+def delete_asset(id: UUID, service: AssetService = Depends(get_asset_service)):
+    service.delete_asset(id)
