@@ -2,6 +2,14 @@
 
 A FastAPI-based application for managing and tracking assets (like domains, IP addresses, etc.) with automated deduplication and lifecycle tracking.
 
+
+## Authentication
+
+Protected endpoints require the `X-API-Key` header.
+
+Default development API key:
+
+
 ## Getting Started
 
 You can run this project either completely containerized using Docker (recommended) or run it locally on your machine.
