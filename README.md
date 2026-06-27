@@ -90,7 +90,7 @@ If you prefer to run the FastAPI application directly on your host machine, foll
 
 6. **Start the Development Server:**
    ```bash
-   uvicorn app.main:app --reload
+py -m uvicorn app.main:app --reload
    ```
 
 7. **Access the Application:**
